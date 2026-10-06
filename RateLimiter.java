@@ -17,3 +17,20 @@ public TokenBucketRateLimiter(long capacity,double refillpersec){
     this.Lastrefilltime=System.nanoTime();
 }
 
+
+public synchronized boolean tryAcquire(){
+    refill();
+    if(tokens>=1){
+        tokens-=1;
+        return true;
+    }
+    return false;
+}
+
+private void refill(){
+    long now=System.nanoTime();
+    tokens=Math.min(capacity,tokens+(now-Lastrefilltime)*refillpersec;
+    Lastrefilltime=now;
+}
+    
+
