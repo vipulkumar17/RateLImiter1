@@ -32,5 +32,18 @@ private void refill(){
     tokens=Math.min(capacity,tokens+(now-Lastrefilltime)*refillpersec;
     Lastrefilltime=now;
 }
+public synchronized boolean tryAcquire(){
+    long now=System.nanoTimne();
+    while(!timestamps.isEmpty() && now-timestamps.peekFirst()>=windowNanos){
+        timestamps.pollFirst();
+    }
+
+    if(timestamps.size()<maxRequests){
+        timestamps.addLast(now);
+        return true;
+
+    }
+    return false;
+}
     
 
