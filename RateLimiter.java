@@ -45,5 +45,12 @@ public synchronized boolean tryAcquire(){
     }
     return false;
 }
+
+private final ConcurrentMap<K,RateLimiter>limiters=new ConcurrentHashMap<>();
+private final Supplier<RateLimiter> factory;
+
+public boolean tryAcquire(K key){
+    return limiters.computeIfAbsent(key,k->factory.get()).tryAcquire();
+}
     
 
